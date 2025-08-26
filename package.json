@@ -9,9 +9,6 @@
   "test": "jest --runInBand"
 }
 
-
-
-
 ,
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
