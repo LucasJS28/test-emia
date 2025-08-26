@@ -1,15 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // src/routes.ts
-const express_1 = require("express");
-const db_1 = require("./db");
-const router = (0, express_1.Router)();
+import { Router } from "express";
+import { pool } from "./db";
+const router = Router();
 router.post("/tasks", async (req, res) => {
     const { title } = req.body;
     if (!title)
         return res.status(400).json({ error: "El título es obligatorio" });
     try {
-        const result = await db_1.pool.query("INSERT INTO tasks (title, completed) VALUES ($1, $2) RETURNING *", [title, false]);
+        const result = await pool.query("INSERT INTO tasks (title, completed) VALUES ($1, $2) RETURNING *", [title, false]);
         res.json(result.rows[0]);
     }
     catch (err) {
@@ -19,7 +17,7 @@ router.post("/tasks", async (req, res) => {
 });
 // Listar tareas
 router.get("/tasks", async (_req, res) => {
-    const result = await db_1.pool.query("SELECT * FROM tasks ORDER BY id ASC");
+    const result = await pool.query("SELECT * FROM tasks ORDER BY id ASC");
     res.json(result.rows);
 });
-exports.default = router;
+export default router;

@@ -1,9 +1,4 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const supertest_1 = __importDefault(require("supertest"));
+import request from "supertest";
 const express = require("express");
 const router = require("../routes").default; // si tu routes.ts usa export default
 const { pool } = require("../db"); // cierra la conexión al final
@@ -14,7 +9,7 @@ describe("API de Tareas", () => {
     let createdTaskId;
     // Test POST /tasks
     it("Debe crear una nueva tarea", async () => {
-        const response = await (0, supertest_1.default)(app)
+        const response = await request(app)
             .post("/tasks")
             .send({ title: "Tarea de test" });
         expect(response.status).toBe(200);
@@ -25,7 +20,7 @@ describe("API de Tareas", () => {
     });
     // Test GET /tasks
     it("Debe listar todas las tareas", async () => {
-        const response = await (0, supertest_1.default)(app).get("/tasks");
+        const response = await request(app).get("/tasks");
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body)).toBe(true);
         // Verifica que la tarea creada exista
